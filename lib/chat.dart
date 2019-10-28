@@ -23,3 +23,10 @@ part 'pages/home.dart';
 part 'pages/login.dart';
 part 'utils/datetime.dart';
 part 'widgets/dialog.dart';
+
+/*
+
+  外部ライブラリは import
+  パッケージ内部を参照するには partもしくはpart of を使用する
+
+ */
