@@ -11,18 +11,17 @@ class HomePage extends StatelessWidget {
       body: StreamBuilder<FirebaseUser>(
           stream: Provider.of<LoginBloc>(context).user,
           builder: (context, user) {
-            if (!user.hasData) {
-              return circularIndicator();
-            }
-            return Provider<FirebaseUser>.value(
-              value: user.data,
-              child: Container(
-                child: Stack(
-                  // TODO: ユーザ一覧ページを追加するならoffstageで出し分けしたい
-                  children: <Widget>[ChatPage()],
-                ),
-              ),
-            );
+            return !user.hasData
+                ? circularIndicator()
+                : Provider<FirebaseUser>.value(
+                    value: user.data,
+                    child: Container(
+                      child: Stack(
+                        // TODO: ユーザ一覧ページを追加するならoffstageで出し分けしたい
+                        children: <Widget>[ChatPage()],
+                      ),
+                    ),
+                  );
           }),
     );
   }

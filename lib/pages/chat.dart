@@ -13,25 +13,25 @@ class ChatPage extends StatelessWidget {
                 stream: bloc.messages,
                 initialData: null,
                 builder: (context, messages) {
-                  if (!messages.hasData) {
-                    return circularIndicator();
-                  }
-                  return Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: messages.data.length,
-                          itemBuilder: (context, index) {
-                            return _messageListItem(messages.data[index], user);
-                          },
-                          controller: listScrollController,
-                          reverse: true,
-                        ),
-                      ),
-                      _inputForm(chatBloc: bloc)
-                    ],
-                  );
+                  return !messages.hasData
+                      ? const Text('まだ投稿がないよ')
+                      : Column(
+                          children: <Widget>[
+                            Expanded(
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: messages.data.length,
+                                itemBuilder: (context, index) {
+                                  return _messageListItem(
+                                      messages.data[index], user);
+                                },
+                                controller: listScrollController,
+                                reverse: true,
+                              ),
+                            ),
+                            _inputForm(chatBloc: bloc)
+                          ],
+                        );
                 },
               )),
     );
@@ -43,23 +43,26 @@ class ChatPage extends StatelessWidget {
     FirebaseUser user,
   ) {
     final widgets = [
-      Container(
-        constraints: const BoxConstraints(maxWidth: 50),
-        child: Column(
-          children: <Widget>[
-            CircleAvatar(
-              child: Icon(
-                Icons.person,
+      // 自分の発言にはアイコンや名前は出さない
+      message.uid == user.uid
+          ? Container()
+          : Container(
+              constraints: const BoxConstraints(maxWidth: 50),
+              child: Column(
+                children: <Widget>[
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.person,
+                    ),
+                  ),
+                  Text(
+                    message.name,
+                    style: TextStyle(fontSize: 10),
+                    textAlign: TextAlign.center,
+                  )
+                ],
               ),
             ),
-            Text(
-              message.name,
-              style: TextStyle(fontSize: 10),
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
-      ),
       Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 8,
@@ -76,16 +79,14 @@ class ChatPage extends StatelessWidget {
         ),
       ),
     ];
-    var mainAxisAlignment = MainAxisAlignment.start;
-    if (message.uid == user.uid) {
-      mainAxisAlignment = MainAxisAlignment.end;
-      widgets.removeAt(0);
-    }
     return ListTile(
       title: Column(
         children: <Widget>[
           Row(
-            mainAxisAlignment: mainAxisAlignment,
+            // 自分の発言は右寄せ
+            mainAxisAlignment: message.uid == user.uid
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: widgets,
           ),

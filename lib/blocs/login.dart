@@ -32,19 +32,15 @@ class LoginBloc {
   }) {
     // コンストラクタでログインチェック処理
     (() async {
-      final currentUser = await auth.currentUser();
       /*
         ログイン済みの場合はauthからログインしているユーザーを取得します
        */
-      if (currentUser != null) {
-        _user.add(currentUser);
-        _isSigned.add(true);
-      } else {
-        _isSigned.add(false);
-      }
+      final currentUser = await auth.currentUser();
+      _isSigned.add(currentUser != null);
+      _user.add(currentUser);
     })();
 
-    _user.listen((user) {
+    _user.where((_) => _ != null).listen((user) {
       // ユーザデータを更新
       /*
         今回のチャットはログイン済みユーザーをusersに保持しています。
