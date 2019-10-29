@@ -58,6 +58,7 @@ class ChatPage extends StatelessWidget {
                   Text(
                     message.name,
                     style: TextStyle(fontSize: 10),
+                    style: const TextStyle(fontSize: 10),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -68,6 +69,7 @@ class ChatPage extends StatelessWidget {
           horizontal: 8,
         ),
         child: Container(
+          constraints: const BoxConstraints(maxWidth: 250),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.grey,
@@ -94,7 +96,7 @@ class ChatPage extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: Text(
                 timestampToString(timestamp: message.timestamp),
-                style: TextStyle(fontSize: 13),
+                style: const TextStyle(fontSize: 13),
               ))
         ],
       ),
