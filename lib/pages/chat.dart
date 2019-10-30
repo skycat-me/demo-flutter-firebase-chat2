@@ -57,7 +57,6 @@ class ChatPage extends StatelessWidget {
                   ),
                   Text(
                     message.name,
-                    style: TextStyle(fontSize: 10),
                     style: const TextStyle(fontSize: 10),
                     textAlign: TextAlign.center,
                   )
